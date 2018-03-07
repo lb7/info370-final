@@ -1,0 +1,24 @@
+---
+title: "Resource"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+knitr::opts_chunk$set(echo = TRUE)
+# Load the data
+mydata <- read.table("./clean.csv", header=TRUE, sep=",")
+```
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+# Import the dataset
+femDir <- mydata[mydata$director_gender == 1,]
+ggplot(femDir, aes(x=startYear))+geom_freqpoly(aes(colour=director_gender), size=3)
+mDir <- mydata[mydata$director_gender == 2,]
+ggplot(mDir, aes(x=startYear))+geom_freqpoly(aes(colour=director_gender), size=3)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

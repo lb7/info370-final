@@ -216,3 +216,12 @@ summary(actor_Votes)
 mydata$actor_pop <- predict(actor_Popularity)
 
 plot(as.numeric(mydata$popularity), as.numeric(mydata$actor_pop))
+
+library(ggplot2)
+mydata$director_gender
+femDir <- mydata[mydata$director_gender == 1,]
+ggplot(femDir, aes(x=startYear))+geom_freqpoly(aes(colour=director_gender), size=3, alpha=I(.6))
+  mDir <- mydata[mydata$director_gender == 2,]
+ggplot(mDir, aes(x=startYear))+geom_freqpoly(aes(colour=director_gender), size=3, alpha=I(.6))
+
+                                                     
