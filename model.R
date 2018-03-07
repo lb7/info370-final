@@ -142,3 +142,71 @@ rating_hierarch_anova
 revenue_hierarch_anova
 popularity_hierarch_anova
 
+## Take a look at percentages
+# Sum the number of 1 occurances
+percentages_cols = c("budget", "startYear","revenue", "averageRating", "popularity", "numVotes","actor1_gender","actor2_gender","actor3_gender","actor4_gender","actor5_gender") 
+percentages_cols = c("actor1_gender","actor2_gender","actor3_gender","actor4_gender","actor5_gender") 
+percentagesData = mydata[percentages_cols]
+
+# Count occurances of gender
+percentagesData$count.1 <- apply(percentagesData, 1, function(x) length(which(x==1)))
+percentagesData$count.2 <- apply(percentagesData, 1, function(x) length(which(x==2)))
+mydata$count_female = percentagesData$count.1
+mydata$percent_female = mydata$count_female / 5
+
+## Main Cast Percentage Female results
+# Gen models for just director information
+percentFemale_Rating <- lm(averageRating ~ percent_female, data=mydata)
+percentFemale_Revenue <- lm(revenue ~ percent_female, data=mydata)
+percentFemale_Popularity <- lm(as.numeric(popularity) ~ percent_female, data=mydata)
+percentFemale_Votes <- lm(numVotes ~ percent_female, data=mydata)
+
+summary(percentFemale_Rating)
+summary(percentFemale_Revenue)
+summary(percentFemale_Popularity)
+summary(percentFemale_Votes)
+
+# NOTE: more impact on popularity of the movie when you consider how these things go...
+# General Appearance is that we don't have a lot of influence over ratings, revenue or votes
+# based on gender. Popularity sees the most impact but even that isn't really a whole lot
+
+## Director Gender vs Director Name
+# Convert Directors to categorical
+mydata$director_code <- as.numeric(factor(mydata$director_name , levels=unique(mydata$director_name)))
+
+# Gen models for just director information
+director_Rating <- lm(averageRating ~ director_gender + director_code, data=mydata)
+director_Revenue <- lm(revenue ~ director_gender + director_code, data=mydata)
+director_Popularity <- lm(as.numeric(popularity) ~ director_code + director_gender, data=mydata)
+director_Votes <- lm(numVotes ~ director_code + director_gender, data=mydata)
+
+summary(director_Rating)
+summary(director_Popularity)
+summary(director_Revenue)
+summary(director_Votes)
+
+# NOTE: Impact of gender for director seems to be less than who the director actually is
+
+## Convert actors to categorical
+mydata$actor1_code <- as.numeric(factor(mydata$actor1_name , levels=unique(mydata$actor1_name)))
+
+mydata$actor2_code <- as.numeric(factor(mydata$actor2_name , levels=unique(mydata$actor2_name)))
+
+mydata$actor3_code <- as.numeric(factor(mydata$actor3_name , levels=unique(mydata$actor3_name)))
+
+mydata$actor4_code <- as.numeric(factor(mydata$actor4_name , levels=unique(mydata$actor4_name)))
+
+mydata$actor5_code <- as.numeric(factor(mydata$actor5_name , levels=unique(mydata$actor5_name)))
+
+# Fit models for just actors
+actor_Rating <- lm(averageRating ~ actor1_gender + actor1_code + actor2_gender + actor2_code + actor3_gender + actor3_code + actor4_gender + actor4_code + actor5_gender + actor5_code, data=mydata)
+actor_Revenue <-  lm(revenue ~ actor1_gender + actor1_code + actor2_gender + actor2_code + actor3_gender + actor3_code + actor4_gender + actor4_code + actor5_gender + actor5_code, data=mydata)
+actor_Popularity <-  lm(as.numeric(popularity) ~ actor1_gender + actor1_code + actor2_gender + actor2_code + actor3_gender + actor3_code + actor4_gender + actor4_code + actor5_gender + actor5_code, data=mydata)
+actor_Votes <-  lm(numVotes ~ actor1_gender + actor1_code + actor2_gender + actor2_code + actor3_gender + actor3_code + actor4_gender + actor4_code + actor5_gender + actor5_code, data=mydata)
+
+# Summarize
+summary(actor_Rating)
+summary(actor_Revenue)
+summary(actor_Popularity)
+summary(actor_Votes)
+
