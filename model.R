@@ -152,10 +152,12 @@ percentagesData = mydata[percentages_cols]
 percentagesData$count.1 <- apply(percentagesData, 1, function(x) length(which(x==1)))
 percentagesData$count.2 <- apply(percentagesData, 1, function(x) length(which(x==2)))
 mydata$count_female = percentagesData$count.1
+mydata$count_male = percentagesData$count.2
+
 mydata$percent_female = mydata$count_female / 5
+mydata$percent_male = mydata$count_male / 5
 
 ## Main Cast Percentage Female results
-# Gen models for just director information
 percentFemale_Rating <- lm(averageRating ~ percent_female, data=mydata)
 percentFemale_Revenue <- lm(revenue ~ percent_female, data=mydata)
 percentFemale_Popularity <- lm(as.numeric(popularity) ~ percent_female, data=mydata)
@@ -165,6 +167,17 @@ summary(percentFemale_Rating)
 summary(percentFemale_Revenue)
 summary(percentFemale_Popularity)
 summary(percentFemale_Votes)
+
+## Main Cast Percentage Female results
+percentMale_Rating <- lm(averageRating ~ percent_male, data=mydata)
+percentMale_Revenue <- lm(revenue ~ percent_male, data=mydata)
+percentMale_Popularity <- lm(as.numeric(popularity) ~ percent_male, data=mydata)
+percentMale_Votes <- lm(numVotes ~ percent_male, data=mydata)
+
+summary(percentMale_Rating)
+summary(percentMale_Revenue)
+summary(percentMale_Popularity)
+summary(percentMale_Votes)
 
 # NOTE: more impact on popularity of the movie when you consider how these things go...
 # General Appearance is that we don't have a lot of influence over ratings, revenue or votes
@@ -210,3 +223,4 @@ summary(actor_Revenue)
 summary(actor_Popularity)
 summary(actor_Votes)
 
+plot(percentFemale_Rating)
