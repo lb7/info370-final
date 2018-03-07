@@ -10,13 +10,13 @@ sapply(mydata,function(x) sum(is.na(x)))
 sapply(mydata, function(x) length(unique(x)))
 
 #### GLM MODELS
-glm_avgRating <- glm(averageRating ~ actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender + director_gender + budget + startYear,
+glm_avgRating <- glm(averageRating ~ actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender + director_gender + startYear,
                      data=mydata, family=gaussian(link="identity"))
 
-glm_Revenue <- glm(revenue ~ actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender + director_gender + budget + startYear,
+glm_Revenue <- glm(revenue ~ actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender + director_gender + startYear,
                      data=mydata, family=gaussian(link="identity"))
 
-glm_Popularity <- glm(as.numeric(popularity) ~ actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender + director_gender + budget + startYear,
+glm_Popularity <- glm(as.numeric(popularity) ~ actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender + director_gender + startYear,
                    data=mydata, family=gaussian(link="identity"))
 
 # Analysis Functions
@@ -52,8 +52,6 @@ rating_hierarch_director_actor3 <- lm(averageRating ~ director_gender + actor1_g
 rating_hierarch_director_actor4 <- lm(averageRating ~ director_gender + actor1_gender + actor2_gender + actor3_gender + actor4_gender, data=mydata)
 rating_hierarch_director_actor5 <- lm(averageRating ~ director_gender + actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender, data=mydata)
 rating_hierarch_director_year <- lm(averageRating ~ director_gender + actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender + startYear, data=mydata)
-rating_hierarch_director_budget <- lm(averageRating ~ director_gender + actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender + startYear + budget, data=mydata)
-
 # Summarize all models
 summary(rating_hierarch_director)
 summary(rating_hierarch_director_actor1)
@@ -62,7 +60,6 @@ summary(rating_hierarch_director_actor3)
 summary(rating_hierarch_director_actor4)
 summary(rating_hierarch_director_actor5)
 summary(rating_hierarch_director_year)
-summary(rating_hierarch_director_budget)
 
 # Run anova on all of them
 rating_hierarch_anova <- anova(rating_hierarch_director,
@@ -71,8 +68,7 @@ rating_hierarch_anova <- anova(rating_hierarch_director,
       rating_hierarch_director_actor3,
       rating_hierarch_director_actor4,
       rating_hierarch_director_actor5,
-      rating_hierarch_director_year,
-      rating_hierarch_director_budget
+      rating_hierarch_director_year
 )
 
 ## REVENUE HIERARCHICAL MODELING
@@ -83,7 +79,6 @@ revenue_hierarch_director_actor3 <- lm(revenue ~ director_gender + actor1_gender
 revenue_hierarch_director_actor4 <- lm(revenue ~ director_gender + actor1_gender + actor2_gender + actor3_gender + actor4_gender, data=mydata)
 revenue_hierarch_director_actor5 <- lm(revenue ~ director_gender + actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender, data=mydata)
 revenue_hierarch_director_year <- lm(revenue ~ director_gender + actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender + startYear, data=mydata)
-revenue_hierarch_director_budget <- lm(revenue ~ director_gender + actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender + startYear + budget, data=mydata)
 
 # Summarize all models
 summary(revenue_hierarch_director)
@@ -93,7 +88,6 @@ summary(revenue_hierarch_director_actor3)
 summary(revenue_hierarch_director_actor4)
 summary(revenue_hierarch_director_actor5)
 summary(revenue_hierarch_director_year)
-summary(revenue_hierarch_director_budget)
 
 # Run anova on all of them
 revenue_hierarch_anova <- anova(revenue_hierarch_director,
@@ -102,8 +96,7 @@ revenue_hierarch_anova <- anova(revenue_hierarch_director,
       revenue_hierarch_director_actor3,
       revenue_hierarch_director_actor4,
       revenue_hierarch_director_actor5,
-      revenue_hierarch_director_year,
-      revenue_hierarch_director_budget
+      revenue_hierarch_director_year
 )
 
 ## POPULARITY HIERARCHICAL MODELING
@@ -114,7 +107,6 @@ popularity_hierarch_director_actor3 <- lm(as.numeric(popularity) ~ director_gend
 popularity_hierarch_director_actor4 <- lm(as.numeric(popularity) ~ director_gender + actor1_gender + actor2_gender + actor3_gender + actor4_gender, data=mydata)
 popularity_hierarch_director_actor5 <- lm(as.numeric(popularity) ~ director_gender + actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender, data=mydata)
 popularity_hierarch_director_year <- lm(as.numeric(popularity) ~ director_gender + actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender + startYear, data=mydata)
-popularity_hierarch_director_budget <- lm(as.numeric(popularity) ~ director_gender + actor1_gender + actor2_gender + actor3_gender + actor4_gender + actor5_gender + startYear + budget, data=mydata)
 
 # Summarize all models
 summary(popularity_hierarch_director)
@@ -124,7 +116,6 @@ summary(popularity_hierarch_director_actor3)
 summary(popularity_hierarch_director_actor4)
 summary(popularity_hierarch_director_actor5)
 summary(popularity_hierarch_director_year)
-summary(popularity_hierarch_director_budget)
 
 # Run anova on all of them
 popularity_hierarch_anova <- anova(popularity_hierarch_director,
@@ -133,8 +124,7 @@ popularity_hierarch_anova <- anova(popularity_hierarch_director,
       popularity_hierarch_director_actor3,
       popularity_hierarch_director_actor4,
       popularity_hierarch_director_actor5,
-      popularity_hierarch_director_year,
-      popularity_hierarch_director_budget
+      popularity_hierarch_director_year
 )
 
 # Examine anovas
@@ -223,4 +213,6 @@ summary(actor_Revenue)
 summary(actor_Popularity)
 summary(actor_Votes)
 
-plot(percentFemale_Rating)
+mydata$actor_pop <- predict(actor_Popularity)
+
+plot(as.numeric(mydata$popularity), as.numeric(mydata$actor_pop))
