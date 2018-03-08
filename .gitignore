@@ -35,3 +35,6 @@ vignettes/*.pdf
 
 data/
 *.Rproj
+
+# Knit outputs
+Resource.html
