@@ -47,8 +47,7 @@ femDir <- count(mydata[mydata$director_gender == 1,], 'startYear')
 mDir <- count(mydata[mydata$director_gender == 2,], 'startYear')
 ggplot() + geom_line(data = femDir,aes(x=startYear, y = freq), color = 'red') + geom_line(data=mDir, aes(x= startYear, y=freq), color='blue') + labs(title="Number of Directors Per Gender by Year", y="Count")
 ```
-
-
+**Red = Female, Blue = Male**
 
 **Gender Breakdown of Main Casting and Directors** 
 
