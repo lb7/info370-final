@@ -1,7 +1,11 @@
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
 # Import the dataset
 mydata <- read.table("./clean.csv", header=TRUE, sep=",") %>% 
   drop_na(averageRating) %>% 
-  filter(revenue > 0)
+  filter(revenue > 50000, revenue < 1.0e9)
 
 # Check for the values that are null
 sapply(mydata,function(x) sum(is.na(x)))
