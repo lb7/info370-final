@@ -184,8 +184,8 @@ summary(percentMale_Votes)
 mydata$director_code <- as.numeric(factor(mydata$director_name , levels=unique(mydata$director_name)))
 
 # Gen models for just director information
-director_Rating <- lm(averageRating ~ director_gender + director_code, data=mydata)
-director_Revenue <- lm(revenue ~ director_gender + director_code, data=mydata)
+director_Rating <- lm(averageRating ~ director_gender, data=mydata)
+director_Revenue <- lm(revenue ~ director_gender, data=mydata)
 director_Popularity <- lm(as.numeric(popularity) ~ director_code + director_gender, data=mydata)
 director_Votes <- lm(numVotes ~ director_code + director_gender, data=mydata)
 
