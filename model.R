@@ -1,5 +1,7 @@
 # Import the dataset
-mydata <- read.table("./clean.csv", header=TRUE, sep=",")
+mydata <- read.table("./clean.csv", header=TRUE, sep=",") %>% 
+  drop_na(averageRating) %>% 
+  filter(revenue > 0)
 
 # Check for the values that are null
 sapply(mydata,function(x) sum(is.na(x)))
