@@ -1,6 +1,10 @@
 library(ggplot2)
+library(dplyr)
 library(tidyr)
 
+source('model.R')
+
+# Add predictions to easily visualize
 n <- mydata %>%
   mutate(
     rating.f = predict(percentFemale_Rating), 
@@ -9,24 +13,10 @@ n <- mydata %>%
     revenue.m = predict(percentMale_Revenue)
   )
 
-rating.f <- ggplot(n, aes(percent_female, averageRating)) + 
-  geom_jitter() + 
-  geom_line(aes(percent_female, rating.f))
-
-rating.m <- ggplot(n, aes(percent_male, averageRating)) + 
-  geom_point() + 
-  geom_line(aes(percent_male, rating.m))
-
-revenue.f <- ggplot(n, aes(percent_female, revenue)) + 
-  geom_point() + 
-  geom_line(aes(percent_female, revenue.f))
-
-revenue.m <- ggplot(n, aes(percent_male, revenue)) + 
-  geom_point() + 
-  geom_line(aes(percent_male, revenue.m))
-
+# Set up colors for legend
 cols <- c(Male='navy', Female='magenta4', Female_Fit='violet', Male_Fit='skyblue')
 
+# Plot gender composition vs ratings
 v.ratings <- ggplot(n) +
   geom_jitter(aes(percent_female, averageRating, color='Female'), alpha=0.7) + 
   geom_jitter(aes(percent_male, averageRating, color='Male'), alpha=0.2) +
@@ -35,6 +25,7 @@ v.ratings <- ggplot(n) +
   labs(title='Rating by Gender Composition', x='Percentage', y='Average Rating') +
   scale_color_manual(name='Legend', values = cols)
 
+# Plot gender composition vs revenue
 v.revenue <- ggplot(n) +
   geom_jitter(aes(percent_female, revenue, color='Female'), alpha=0.7) + 
   geom_jitter(aes(percent_male, revenue, color='Male'), alpha=0.2) +

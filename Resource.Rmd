@@ -8,10 +8,11 @@ library(ggplot2)
 knitr::opts_chunk$set(echo = TRUE)
 # Load the data
 mydata <- read.table("./clean.csv", header=TRUE, sep=",")
+source('visuals.R')
 ```
-## Including Plots
 
-You can also embed plots, for example:
+
+## Visuals
 
 ```{r pressure, echo=FALSE}
 # Import the dataset
@@ -21,4 +22,20 @@ mDir <- mydata[mydata$director_gender == 2,]
 ggplot(mDir, aes(x=startYear))+geom_freqpoly(aes(colour=director_gender), size=3)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+### Gender composition
+```{r echo=FALSE}
+v.ratings
+```
+
+This plot shows the relationship between gender composition of a film and its average viewer ratings.
+Our predictions show that there is a slight positive correlation between a more male-dominated cast
+and a slight negative correlation with a more female-dominated cast.
+
+```{r echo=FALSE}
+v.revenue
+```
+
+This plot shows the relationship between gender composition of a film and another, 
+arguably more important metric of success, revenue.
+The model for this scenario suggests that there is a positive correlation associated with high
+percentages of both genders, with a male-dominated cast being about 3 times more highly correlated.
