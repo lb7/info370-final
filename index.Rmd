@@ -4,7 +4,7 @@ author:
   - Patricia Au
   - Luke Baker
   - Nathan Swanson
-  - Derek wang
+  - Derek Wang
 output: html_document
 ---
 
@@ -42,7 +42,13 @@ Below are visual representations of key pieces of information within the dataset
 library(knitr)
 example <- MyData %>% select(primaryTitle, startYear, averageRating, numVotes, revenue, popularity, actor1_gender, actor2_gender, director_gender) 
 kable(example[1:5,])
+
+femDir <- count(mydata[mydata$director_gender == 1,], 'startYear')
+mDir <- count(mydata[mydata$director_gender == 2,], 'startYear')
+ggplot() + geom_line(data = femDir,aes(x=startYear, y = freq), color = 'red') + geom_line(data=mDir, aes(x= startYear, y=freq), color='blue') + labs(title="Number of Directors Per Gender by Year", y="Count")
 ```
+
+
 
 **Gender Breakdown of Main Casting and Directors** 
 
@@ -93,15 +99,6 @@ These results should be taken with a grain of salt at this point. A lot of data 
 
 
 ## Visuals
-
-
-```{r pressure, echo=FALSE}
-# Import the dataset
-#femDir <- mydata[mydata$director_gender == 1,]
-#ggplot(femDir, aes(x=startYear))+geom_freqpoly(aes(colour=director_gender), size=3)
-#mDir <- mydata[mydata$director_gender == 2,]
-#ggplot(mDir, aes(x=startYear))+geom_freqpoly(aes(colour=director_gender), size=3)
-```
 
 ### Gender Composition
 ```{r echo=FALSE}
