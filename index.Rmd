@@ -1,5 +1,10 @@
 ---
-title: "Resource"
+title: "Examining Gender Disparity in the Film Industry"
+author:
+  - Patricia Au
+  - Luke Baker
+  - Nathan Swanson
+  - Derek wang
 output: html_document
 ---
 
@@ -64,19 +69,41 @@ Our second model involved purely director related data, and used director's gend
 Following the construction of these models, we examined a technique used in one of the research studies we looked at which used Hierarchical Linear Regression in order to assess different models and observe changes as more features were added. We generated a series of models with features progressing from director gender to the genders of the 5 actors as well as the start year of the film. The individual model summaries and anova measures were assessed to see if any of the models in the progression were substantially better are predicting each of our target features.
 
 
+## Results
+### Gender Composition
+```{r}
+summary(percentFemale_Rating)
+summary(percentMale_Rating)
+```
+
+Based on our models, a higher percentage of females in the top-billed cast is associated with a lower rating by viewers. 
+Revenue is shown to increase with a higher percentage of either gender, but a more male-dominated cast will affect revenue significantly more than a more female-dominated cast.
+
+### Director Gender
+```{r}
+summary(director_Rating)
+summary(director_Revenue)
+```
+
+The gender of a movie’s director also was shown to have an effect, though relatively slight, on the ratings a movie received. A male-directed film will typically score about 0.12 points (out of 10) higher than a female-directed film.
+
+Revenue was also negatively correlated with female directors. Our models show male directors earning $21,360,514 more than female directors on average. Given the range of revenue in the film industry this isn’t necessarily a huge difference but it certainly could be when discussing films that don’t necessarily have a big blockbuster budget.
+
+These results should be taken with a grain of salt at this point. A lot of data was lost between important columns missing or removal of outliers that didn’t really fit with the kind of analysis we were doing. They do, however provide a starting point for discussion and further research into the question of gender disparity in the entertainment industry.
+
 
 ## Visuals
 
 
 ```{r pressure, echo=FALSE}
 # Import the dataset
-femDir <- mydata[mydata$director_gender == 1,]
-ggplot(femDir, aes(x=startYear))+geom_freqpoly(aes(colour=director_gender), size=3)
-mDir <- mydata[mydata$director_gender == 2,]
-ggplot(mDir, aes(x=startYear))+geom_freqpoly(aes(colour=director_gender), size=3)
+#femDir <- mydata[mydata$director_gender == 1,]
+#ggplot(femDir, aes(x=startYear))+geom_freqpoly(aes(colour=director_gender), size=3)
+#mDir <- mydata[mydata$director_gender == 2,]
+#ggplot(mDir, aes(x=startYear))+geom_freqpoly(aes(colour=director_gender), size=3)
 ```
 
-### Gender composition
+### Gender Composition
 ```{r echo=FALSE}
 v.ratings
 ```
@@ -85,6 +112,7 @@ This plot shows the relationship between gender composition of a film and its av
 Our predictions show that there is a slight positive correlation between a more male-dominated cast
 and a slight negative correlation with a more female-dominated cast.
 
+### Director Gender
 ```{r echo=FALSE}
 v.revenue
 ```
@@ -93,3 +121,15 @@ This plot shows the relationship between gender composition of a film and anothe
 arguably more important metric of success, revenue.
 The model for this scenario suggests that there is a positive correlation associated with high
 percentages of both genders, with a male-dominated cast being about 3 times more highly correlated.
+
+```{r echo=FALSE}
+v.dir.ratings
+```
+
+Plot of director gender and film rating.
+
+```{r echo=FALSE}
+v.dir.revenue
+```
+
+Director gender vs revenue earned
