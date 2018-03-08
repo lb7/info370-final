@@ -10,9 +10,63 @@ knitr::opts_chunk$set(echo = TRUE)
 mydata <- read.table("./clean.csv", header=TRUE, sep=",")
 source('visuals.R')
 ```
+## Purpose 
+
+With news articles reporting and comparing the salaries of actors and actresses, gender equity and equality in the entertainment industry has been discussed for a long time. Women seemingly continue to earn less than men for performing equally - if not more - important roles. The purpose of our research project is to explore this field further and find whether or not the environment has changed within the entertainment industry. To do this, we will be answering the following hypotheses: 
+
+Does the gender composition of the cast have a statistically significant impact on a movie's perception (rating) by audiences and the total revenue earned. 
+
+Does the gender of the director have a statistically significant impact on a movie's perception (rating) by audiences and and the total revenue earned. 
+
+The target audiences for this study are both the film industry as a whole (Hollywood and big film companies), the various award groups, organizations, and festivals, as well as the general public. The main audience that we would like to tailor our study for is the film industry in Hollywood. Providing information about gender inequality in the film industry will hopefully start discussions about changes that need to be made within the community to address the issues with fairness and equality.
+
+The data shown below should answer questions pertaining to gender's relationship with perception of films among audiences. This includes the overall gender representation of starring actors/actresses as well as director gender and how that affects both revenue and film popularity.
+
+
+## The Dataset
+To answer the above questions, we will be working with the following data: 
+
+- 350,000+ Movies From themoviedb.org - a dataset accessed from Kaggle that contains movie information from the end of the 19th century up to August 2017. The primary source of for this dataset is www.themoviedb.org. The dataset contains information about cast, directors, awards, and fan opinions. This dataset will help us understand the relationship between director and main cast gender, and the perception of the movie. 
+
+- IMDB - IMDB provides all the data in their database in the form of several TSV files. This includes basic title info, cast and crew and ratings. Some data wrangling will be required to get all the data from all the files together. 
+
+Below are visual representations of key pieces of information within the dataset we constructed from the above mentioned sources. 
+
+**An example of the key variables in the dataset**
+```{r echo=FALSE, results='asis'}
+library(knitr)
+example <- MyData %>% select(primaryTitle, startYear, averageRating, numVotes, revenue, popularity, actor1_gender, actor2_gender, director_gender) 
+kable(example[1:5,])
+```
+
+**Gender Breakdown of Main Casting and Directors** 
+
+```{r echo=FALSE}
+v.actor.gender
+```
+
+This plot is a breakdown of a key piece of our dataset used throughout our modeling. The main casting (first five billed actors/actresses) are represented with numbers 1-5 and the number of actors/actresses for each gender. Of note, the majority of our dataset does not provide gender which has significantly reduced the amount of information available for the models.  
+
+```{r echo=FALSE}
+v.dir.gender
+```
+
+This plot shows the gender of each movie director in the dataset we used. This information shows that there are significantly more male directors than female. Unfortunatley, just like the gender information for actors/actresses, there are many values missing for gender within our dataset. 
+
+## Methods
+
+To model our data, we elected to use several linear models, each targeted at explaining a different variable and fitted over our data set. We first separated out the target variables, those being the film's average rating as rated by IMDB, the popularity measure of the film, and the revenue of the film. We constructed a selection of linear models which could address each of these targets, with each target being indicative of a different characteristic about film reception. 
+
+The first of our models consisted of predicting each of our target variables using the percentage of females in the top 5 actors/actresses for each film. Because the top 5 actors are typically the most integral to the film and will most likely play the largest roles in the film, the perception of the movie would be more impacted by these individuals. Additionally, this same assessment was also performed for the percentages of male actors in the top 5 for comparison.
+
+Our second model involved purely director related data, and used director's gender to predict each of our target features. The intent of this model is to see if there was a significantly high correlation between just these variables with special interest being placed on the gender of the director. Similarly to the director model, we constructed a separate model that included the same information but only included the gender of the top 5 actors. Specific actors or directors may have an impact on the perception of the movie, and this could affect how the model performed.
+
+Following the construction of these models, we examined a technique used in one of the research studies we looked at which used Hierarchical Linear Regression in order to assess different models and observe changes as more features were added. We generated a series of models with features progressing from director gender to the genders of the 5 actors as well as the start year of the film. The individual model summaries and anova measures were assessed to see if any of the models in the progression were substantially better are predicting each of our target features.
+
 
 
 ## Visuals
+
 
 ```{r pressure, echo=FALSE}
 # Import the dataset
